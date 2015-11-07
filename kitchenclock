@@ -1,0 +1,64 @@
+#! /usr/bin/ruby
+
+ERROR = "ERROR"
+WARNING = "WARNING"
+
+def print_msg(type, msg)
+	puts ""
+	puts ""
+	puts "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
+	print(type.upcase)
+	print(": ")
+	puts msg
+	puts "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
+	puts ""
+	puts "kitchenclock - an egg timer written in ruby:"
+	puts ""
+	puts "Input format:"
+	puts "\tmm:ss\t Time in minutes:seconds.\n\t\t Minutes can be greater than 60."
+	puts ""
+	puts "\t:ss\t If you only want seconds, there's no need to spezify minutes"
+	puts ""
+	puts "\tmmm\t If there's only one number it's interpreted as mm:00 \n \t\t Minutes can be greater than 60."
+end
+
+if !ARGV.empty? then
+	time = ARGV[0].dup
+else
+	puts "enter minutes time in mm:ss"
+	time = gets.chomp
+	
+	puts "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
+	puts ""
+end
+
+if /^:[0-9]{2}$/.match(time) then
+	time = "00" + time
+end
+
+if /^[0-9]+$/.match(time) then
+	time << ":00"
+end
+
+if not /^[0-9]+:[0-9]{2}$/.match(time) then
+	print_msg(ERROR, "Input has wrong format")
+	exit
+end
+
+sec = time.split(":")[0].to_i * 60
+sec += time.split(":")[1].to_i
+
+eggTime = Time.now.to_i + sec.to_i
+
+until(Time.now.to_i > eggTime)
+#override a bit more for better readability
+time = (sec/60).to_s + ":".to_s + format('%02d',(sec%60).to_s) + 
+  "                                  \r"
+print time
+$stdout.flush
+sec = sec - 1
+sleep 1
+end
+
+system("play ~/media/musik/Old-alarm-clock-ringing.mp3 &>/dev/null")
+exit
