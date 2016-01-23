@@ -4,4 +4,6 @@ HDMISTATE=$(xrandr | grep -o 'HDMI.*(')
 
 if [[ $HDMISTATE !=  "HDMI-0 disconnected (" ]] ; then
 	$(xrandr --output VGA-0 --off --output LVDS-0 --off --output HDMI-0 --mode 1920x1080 --pos 0x0 --rotate normal)
+else
+	$(xrandr --output LVDS-0 --mode 1366*768)
 fi
