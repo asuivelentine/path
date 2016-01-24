@@ -1,9 +1,10 @@
-#!/bin/bash
+#!/usr/bin/env ruby
 
-HDMISTATE=$(xrandr | grep -o 'HDMI.*(')
+state = `xrandr | grep -o "HDMI.*"`.chomp
+puts state
 
-if [[ $HDMISTATE !=  "HDMI-0 disconnected (" ]] ; then
-	$(xrandr --output VGA-0 --off --output LVDS-0 --off --output HDMI-0 --mode 1920x1080 --pos 0x0 --rotate normal)
+if state.include? "HDMI-0 connected" then
+	`xrandr --output VGA-0 --off --output LVDS-0 --off --output HDMI-0 --mode 1920x1080 --rotate normal`
 else
-	$(xrandr --output LVDS-0 --mode 1366*768)
-fi
+	`xrandr --output VGA-0 --off --output LVDS-0 --mode 1366x768 --rotate normal --output HDMI-0 --off`
+end
