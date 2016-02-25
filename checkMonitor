@@ -4,7 +4,7 @@ state = `xrandr | grep -o "HDMI.*"`.chomp
 puts state
 
 if state.include? "HDMI-0 connected" then
-	`xrandr --output VGA-0 --off --output LVDS-0 --off --output HDMI-0 --mode 1920x1080 --rotate normal`
+	`xrandr --output VGA-1 --off --output LVDS-1 --off --output HDMI-1 --mode 1920x1080 --rotate normal`
 else
-	`xrandr --output VGA-0 --off --output LVDS-0 --mode 1366x768 --rotate normal --output HDMI-0 --off`
+	`xrandr --output VGA-1 --off --output LVDS-1 --mode 1366x768 --rotate normal --output HDMI-1 --off`
 end
