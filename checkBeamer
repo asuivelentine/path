@@ -1,0 +1,12 @@
+#!/usr/bin/env ruby
+
+state = `xrandr | grep -o "VGA.*"`.chomp
+puts state
+
+if state.include? "VGA1 connected" then
+	`xrandr --output LVDS1 --primary --mode 1024x600 --pos 0x1050 --rotate normal --output VGA1 --mode 1920x1080 --pos 0x0 --rotate normal`
+else
+	`xrandr --output VIRTUAL1 --off --output LVDS1 --primary --mode 1024x600 --pos 0x0 --rotate normal --output VGA1 --off`
+end
+
+`nitrogen --restore`
