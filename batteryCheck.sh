@@ -1,8 +1,6 @@
 #!/bin/bash
 
-v=$(acpi -V | head -n1 | grep -o '..%' | tr -d '%')
+line=$(acpi -V | head -n1) 
+v=$(echo "$line" | egrep -o '[0-9]?..(.)?%' | tr -d '%')
 
-if [[ $v -lt 15 ]]; then
-	i3-nagbar -m 'low battery'
-fi
-
+DISPLAY=0.0 $(xsetroot -name "bat: $v%")
